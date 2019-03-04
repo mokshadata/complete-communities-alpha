@@ -5,6 +5,7 @@ import { ajax } from 'rxjs/ajax'
 import { ofType } from 'redux-observable'
 
 import { createSimpleAction, createConstantAction } from '../redux/helpers'
+import { neighborhoods } from '../redux/constants'
 
 // Action Types
 const prefix = 'opportunity-zones/projects/'
@@ -12,13 +13,15 @@ const prefix = 'opportunity-zones/projects/'
 const FETCH = `${prefix}FETCH`
 const LOAD = `${prefix}LOAD`
 const CREATE = `${prefix}CREATE`
-const UPDATE = `${prefix}UPDATE`
-const REMOVE = `${prefix}REMOVE`
+const SET_NEIGHBORHOOD = `${prefix}SET_NEIGHBORHOOD`
+// const UPDATE = `${prefix}UPDATE`
+// const REMOVE = `${prefix}REMOVE`
 
 export const actionTypes = {
   fetch, FETCH,
   load: LOAD,
   create: CREATE,
+  setNeighborhood: SET_NEIGHBORHOOD,
   // update: UPDATE,
   // remove: REMOVE,
 }
@@ -27,6 +30,7 @@ export const actionTypes = {
 export const fetchProjects = createConstantAction(FETCH)
 export const loadProjects = createSimpleAction(LOAD)
 export const createProject = createSimpleAction(CREATE)
+export const setNeighborhood = createSimpleAction(SET_NEIGHBORHOOD)
 
 // Reducer
 const initialState = {
@@ -42,6 +46,11 @@ export default createReducer(
     [
       CREATE, (item) => evolve({
         items: append(item),
+      }),
+    ],
+    [
+      SET_NEIGHBORHOOD, (neighborhoodKey) => assoc('filters', {
+        neighborhood: neighborhoods[neighborhoodKey],
       }),
     ],
 ])

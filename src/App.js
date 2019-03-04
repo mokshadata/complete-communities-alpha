@@ -4,6 +4,7 @@ import 'react-bulma-components/dist/react-bulma-components.min.css';
 import { Section, Container, Columns } from 'react-bulma-components'
 
 import Projects from './Projects'
+import Filters from './Filters'
 
 class App extends Component {
   render() {
@@ -12,8 +13,11 @@ class App extends Component {
         <Section>
           <Container>
             <Columns>
-              <Columns.Column>
+              <Columns.Column size={8}>
                 <Projects/>
+              </Columns.Column>
+              <Columns.Column>
+                <Filters/>
               </Columns.Column>
             </Columns>
           </Container>
