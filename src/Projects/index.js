@@ -1,20 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchProjects } from './duck'
+import { Project } from '../Project'
+import { Heading } from 'react-bulma-components'
 
-class Projects extends Component {
+export class Projects extends Component {
   componentWillMount() {
     this.props.fetchProjects()
   }
   render() {
     return (
-      <div>
-        <h1>Hello</h1>
-        {
-          this.props.projects
-            .map((project) => (<h1>{project.Goal}</h1>))
-        }
-      </div>
+        <div>
+          <Heading>Projects</Heading>
+          {
+            this.props.projects.map(
+              (project, index) => (
+                <Project
+                  project={project}
+                  key={index}
+                />
+              )
+            )
+          }
+        </div>
     )
   }
 }
