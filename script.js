@@ -1,6 +1,7 @@
 const XLSX = require('xlsx')
 const path = require('path')
 const fs = require('fs')
+const { map, mapObjIndexed, flatten, values, assoc, pipe } = require('ramda')
 
 module.exports = {
   getDataFromXLSXSync,
@@ -24,6 +25,19 @@ function getDataFromXLSXSync(relativeFilePath) {
   return workbook.SheetNames.reduce(joinDataFromSheet.bind(null, workbook), {})
 }
 
-const workbook = getDataFromXLSXSync('./data/complete-communities-workbook.xlsx')
+function setKeyAsNeighborhood(list, neighborhood) {
+  return map(assoc('neighborhood', neighborhood), list)
+}
 
-fs.writeFileSync(getFullPath('./public/data/complete-communities-projects.json'), JSON.stringify(workbook))
+function flattenToList(projectsByNeighborhoods) {
+  return pipe(
+    mapObjIndexed(setKeyAsNeighborhood),
+    values,
+    flatten,
+  )(projectsByNeighborhoods)
+}
+
+const workbook = getDataFromXLSXSync('./data/complete-communities-workbook.xlsx')
+const items = flattenToList(workbook)
+
+fs.writeFileSync(getFullPath('./public/data/complete-communities-projects.json'), JSON.stringify(items))

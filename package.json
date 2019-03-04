@@ -4,11 +4,16 @@
   "private": true,
   "homepage": "https://januaryadvisors.github.io/opportunity-zones-alpha",
   "dependencies": {
+    "axios": "^0.18.0",
+    "ramda": "^0.26.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-redux": "^6.0.1",
+    "react-router": "^4.3.1",
     "react-scripts": "2.1.5",
     "redux": "^4.0.1",
+    "redux-observable": "^1.0.0",
+    "redux-ramda": "^1.0.1",
     "xlsx": "^0.14.1"
   },
   "scripts": {
