@@ -15,24 +15,17 @@ export function Project({ project }) {
           <Heading size={5}>
             { project.Projects }
           </Heading>
-          <p>{ project['Action Steps']}</p>
+          <ul>{ project.steps.map((step, index) => <li key={index}>{step}</li>)}</ul>
           <Tag.Group>
             <Tag>
               { project.Section }
             </Tag>
             {
-              project.programs.map((program, index) => (
+              project.eligiblePrograms.map((program, index) => (
                 <Tag key={ index }>{ program }</Tag>
               ))
             }
           </Tag.Group>
-          {
-            project['OZ Eligible'] === ""? null :
-              (<Tag.Group gapless>
-                <Tag color="primary">OZ Eligible</Tag>
-                <Tag>{ project['OZ Eligible'] }</Tag>
-              </Tag.Group>)
-          }
           {
             project['neighborhood'] === ""? null :
               (<Tag.Group gapless>

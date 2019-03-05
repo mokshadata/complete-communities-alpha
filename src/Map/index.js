@@ -24,6 +24,10 @@ export class Map extends Component {
     const neighborhoodLayers = map(path(['properties', ['SNBNAME']]))(this.props.data.features)
 
     return (
+    <div
+      style={{
+        height: viewport.height
+      }}>
       <DeckGL
         controller={{ type: MapController }}
         {...viewport}
@@ -66,6 +70,6 @@ export class Map extends Component {
           }}
         />
       </DeckGL>
-    )
+    </div>)
   }
 }

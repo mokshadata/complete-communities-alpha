@@ -1,19 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchNeighborhoods } from './duck'
-import { setNeighborhood } from '../Projects/duck'
+import { setFilter } from '../Projects/duck'
 
-import { Form, Field, Label, Control, Input } from 'react-bulma-components'
-// import 'leaflet'
-// import { Map, TileLayer, Polygon, GeoJSON } from 'react-leaflet'
+import Switch from 'react-bulma-switch/lib'
+import { Form, Field, Label, Control, Input, Heading } from 'react-bulma-components'
+import { neighborhoods } from '../redux/constants'
+
 import { Map } from '../Map'
+import { FilterTag } from '../Tags' 
 
 export class Filters extends Component {
   componentWillMount() {
     this.props.fetchNeighborhoods()
   }
   setNeighborhood = (neighborhood) => {
-    this.props.setNeighborhood(neighborhood)
+    this.props.setFilter({
+      neighborhood
+    })
+  }
+  toggleOZ = () => {
+    this.props.setFilter({
+      oz: !this.props.filters.oz
+    })
   }
   render() {
     return (
@@ -23,7 +32,24 @@ export class Filters extends Component {
           onShapeClick={this.setNeighborhood}
           activeNeighborhood={this.props.filters.neighborhood}
         />
+        <Heading subtitle size={5} style={{
+          marginTop: '1rem',
+          marginBottom: 0,
+        }}>Filters</Heading>
         <form>
+          <Switch
+            value={this.props.filters.oz}
+            onChange={this.toggleOZ}
+            >
+            OZ Eligible Only
+          </Switch>
+          {
+            this.props.filters.neighborhood? (<FilterTag
+              handleDelete={() => this.setNeighborhood(null)}
+              type='neighborhood'>{
+              neighborhoods[this.props.filters.neighborhood]
+            }</FilterTag>) : null
+          }
           {/* <Field>
             <Label>Name</Label>
             <Control>
@@ -41,5 +67,8 @@ export default connect(
       filters: { neighborhoods = {} },
       projects: { filters = {} },
     } ) => ({ neighborhoods, filters }),
-  { fetchNeighborhoods, setNeighborhood },
+  {
+    fetchNeighborhoods,
+    setFilter,
+  },
 )(Filters)
