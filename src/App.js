@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import 'react-bulma-components/dist/react-bulma-components.min.css';
+import 'bulma-steps/dist/css/bulma-steps.min.css'
 
 import { Section, Container, Columns } from 'react-bulma-components'
 

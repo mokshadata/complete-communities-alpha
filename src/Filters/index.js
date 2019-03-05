@@ -32,7 +32,7 @@ export class Filters extends Component {
           onShapeClick={this.setNeighborhood}
           activeNeighborhood={this.props.filters.neighborhood}
         />
-        <Heading subtitle size={5} style={{
+        <Heading size={5} style={{
           marginTop: '1rem',
           marginBottom: 0,
         }}>Filters</Heading>

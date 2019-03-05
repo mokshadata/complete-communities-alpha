@@ -1,0 +1,49 @@
+.content .metrics-list .title {
+  margin-bottom: 0.25em;
+}
+
+.metrics-list--item,
+.metrics-list {
+  padding-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+
+.metrics-list--item:not(:last-child) {
+  border-bottom: 0.5px solid #cccccc;
+}
+
+.content p.metrics-list--by::before {
+  content: 'By';
+  margin-right: 0.5em;
+}
+
+.content p.metrics-list--by,
+.content p.metrics-list--now::before {
+  font-style: italic;
+}
+
+.content p.metrics-list--now::before {
+  content: 'Now:';
+  margin-right: 0.5em;
+
+}
+
+.content p.metrics-list--metric {
+  font-weight: 600;
+}
+
+.content p.metrics-list--by,
+.content p.metrics-list--now,
+.content p.metrics-list--metric,
+.content p.metrics-list--source {
+  margin-bottom: 0.25em;
+}
+
+.content p.metrics-list--source {
+  font-size: 0.75em;
+}
+
+.content p.metrics-list--source::before {
+  content: 'From:';
+  margin-right: 0.5em;
+}
