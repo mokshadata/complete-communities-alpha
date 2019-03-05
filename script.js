@@ -1,7 +1,18 @@
 const XLSX = require('xlsx')
 const path = require('path')
 const fs = require('fs')
-const { map, mapObjIndexed, flatten, values, assoc, pipe } = require('ramda')
+const {
+  map,
+  mapObjIndexed,
+  flatten,
+  values,
+  assoc,
+  pipe,
+  equals,
+  pickBy,
+  keys,
+  concat,
+} = require('ramda')
 
 module.exports = {
   getDataFromXLSXSync,
@@ -34,7 +45,21 @@ function flattenToList(projectsByNeighborhoods) {
     mapObjIndexed(setKeyAsNeighborhood),
     values,
     flatten,
+    map(setPrograms),
   )(projectsByNeighborhoods)
+}
+
+function setPrograms(project) {
+  let eligiblePrograms = pipe(
+    pickBy(
+      equals(true),
+    ),
+    keys,
+  )( project )
+  if (project['OZ Eligible'] !== 'No' && project['OZ Eligible'] !== ''){
+    eligiblePrograms = concat(eligiblePrograms, ['Opportunity Zone'])
+  }
+  return assoc('programs', eligiblePrograms)(project)
 }
 
 const workbook = getDataFromXLSXSync('./data/complete-communities-workbook.xlsx')

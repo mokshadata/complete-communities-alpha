@@ -5,14 +5,6 @@ import { pickBy, keys, pipe, equals } from 'ramda'
 
 export function Project({ project }) {
 
-  // put these into the store eventually
-  const eligiblePrograms = pipe(
-    pickBy(
-      equals(true),
-    ),
-    keys,
-  )( project )
-
   return (
     <Card style={{marginBottom: '2rem'}}>
       <Card.Header>
@@ -29,7 +21,7 @@ export function Project({ project }) {
               { project.Section }
             </Tag>
             {
-              eligiblePrograms.map((program, index) => (
+              project.programs.map((program, index) => (
                 <Tag key={ index }>{ program }</Tag>
               ))
             }
