@@ -8,7 +8,7 @@ import { filter, concat, includes, identity, toPairs, reduce, map, pipe, reject,
 
 const filterFns = {
   neighborhood: (value, project) => (neighborhoods[value] === project.neighborhood),
-  oz: (value, project) => (value && includes('Opportunity Zone', project.eligiblePrograms)) || (!value && true),
+  oz: (value, project) => (value && includes('Opportunity Zone', project.eligiblePrograms || [])) || (!value && true),
 }
 
 const quickProjectFilter = curry(
