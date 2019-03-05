@@ -23,14 +23,21 @@ export const fetchNeighborhoods = createConstantAction(FETCH)
 export const loadNeighborhoods = createSimpleAction(LOAD)
 
 export function filterGeoJSON(geoJSON) {
-  return geoJSON.features.filter((item) => (
+  const features = geoJSON.features.filter((item) => (
     includes(item.properties.SNBNAME, keys(neighborhoods))
   ))
+
+  return assoc('features', features)({
+    type: 'FeatureCollection',
+  })
 }
 
 // Reducer
 const initialState = {
-  neighborhoods: [],
+  neighborhoods: {
+    features: [],
+    type: 'FeatureCollection',
+  },
 }
 
 export default createReducer(

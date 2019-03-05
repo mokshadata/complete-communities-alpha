@@ -1,10 +1,11 @@
 import { combineEpics } from 'redux-observable'
 import { combineReducers } from 'redux'
-import projects, { fetchProjectsEpic } from '../Projects/duck'
+import projects, { fetchProjectsEpic, filterProjectsEpic } from '../Projects/duck'
 import filters, { fetchNeighborhoodsEpic } from '../Filters/duck'
 
 export const rootEpic = combineEpics(
   fetchProjectsEpic,
+  // filterProjectsEpic,
   fetchNeighborhoodsEpic,
 )
 

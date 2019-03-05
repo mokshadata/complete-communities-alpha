@@ -1,5 +1,5 @@
 export const neighborhoods = {
-  'ACRES HOME': 'Acres Home',
+  'ACRES HOME': 'Acres Homes',
   'NEAR NORTHSIDE': 'Near Northside',
   'GULFTON': 'Gulfton',
   'SECOND WARD': 'Second Ward',

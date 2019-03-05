@@ -1,6 +1,6 @@
-import { evolve, assoc, append} from 'ramda'
+import { evolve, assoc, append, includes } from 'ramda'
 import { createReducer } from 'redux-ramda'
-import { map, mergeMap } from 'rxjs/operators'
+import { map, mapTo, mergeMap, filter, withLatestFrom } from 'rxjs/operators'
 import { ajax } from 'rxjs/ajax'
 import { ofType } from 'redux-observable'
 
@@ -16,6 +16,7 @@ const CREATE = `${prefix}CREATE`
 const SET_NEIGHBORHOOD = `${prefix}SET_NEIGHBORHOOD`
 // const UPDATE = `${prefix}UPDATE`
 // const REMOVE = `${prefix}REMOVE`
+const FILTER = `${prefix}FILTER`
 
 export const actionTypes = {
   fetch, FETCH,
@@ -24,6 +25,7 @@ export const actionTypes = {
   setNeighborhood: SET_NEIGHBORHOOD,
   // update: UPDATE,
   // remove: REMOVE,
+  filter: FILTER,
 }
 
 // Action Creators
@@ -31,11 +33,13 @@ export const fetchProjects = createConstantAction(FETCH)
 export const loadProjects = createSimpleAction(LOAD)
 export const createProject = createSimpleAction(CREATE)
 export const setNeighborhood = createSimpleAction(SET_NEIGHBORHOOD)
+export const filterProjects = createSimpleAction(FILTER)
 
 // Reducer
 const initialState = {
   filters: {},
   items: [],
+  filteredItems: [],
 }
 
 export default createReducer(
@@ -49,10 +53,16 @@ export default createReducer(
       }),
     ],
     [
-      SET_NEIGHBORHOOD, (neighborhoodKey) => assoc('filters', {
-        neighborhood: neighborhoods[neighborhoodKey],
+      SET_NEIGHBORHOOD, (neighborhood) => assoc('filters', {
+        neighborhood,
       }),
     ],
+    [
+      FILTER, (state, action) => {
+        console.log(state, action)
+        return state
+      }
+    ]
 ])
 
 // Side-effects
@@ -65,5 +75,12 @@ export function fetchProjectsEpic(action$) {
           map(loadProjects)
         )
     ),
+  )
+}
+
+export function filterProjectsEpic(action$, state$) {
+  return action$.pipe(
+    filter((action) => includes(action.type)([LOAD, SET_NEIGHBORHOOD])),
+    // mergeMap(filterProjects),
   )
 }

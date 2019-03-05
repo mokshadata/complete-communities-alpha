@@ -11,9 +11,9 @@ class App extends Component {
     return (
       <div className="App">
         <Section>
-          <Container>
+          <Container fluid>
             <Columns>
-              <Columns.Column size={8}>
+              <Columns.Column size={7}>
                 <Projects/>
               </Columns.Column>
               <Columns.Column>

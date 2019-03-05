@@ -14,7 +14,7 @@ export function Project({ project }) {
   )( project )
 
   return (
-    <Card>
+    <Card style={{marginBottom: '2rem'}}>
       <Card.Header>
         <Card.Header.Title>{ project.Goal }</Card.Header.Title>
       </Card.Header>
@@ -39,6 +39,13 @@ export function Project({ project }) {
               (<Tag.Group gapless>
                 <Tag color="primary">OZ Eligible</Tag>
                 <Tag>{ project['OZ Eligible'] }</Tag>
+              </Tag.Group>)
+          }
+          {
+            project['neighborhood'] === ""? null :
+              (<Tag.Group gapless>
+                <Tag>Neighborhood</Tag>
+                <Tag color="warning">{ project['neighborhood'] }</Tag>
               </Tag.Group>)
           }
         </Content>
