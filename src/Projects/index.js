@@ -37,6 +37,7 @@ export class Projects extends Component {
           <div style={{
               height: 'calc(100vh - 160px)',
               overflow: 'auto',
+              padding: '1px',
             }}>
               {
                 mapIndexed((project, index) => {
