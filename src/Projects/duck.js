@@ -1,6 +1,6 @@
 import { evolve, mergeDeepLeft, assoc, append, includes, keys } from 'ramda'
 import { createReducer } from 'redux-ramda'
-import { map, mapTo, mergeMap, filter, withLatestFrom } from 'rxjs/operators'
+import { map, mergeMap, filter } from 'rxjs/operators'
 import { ajax } from 'rxjs/ajax'
 import { ofType } from 'redux-observable'
 

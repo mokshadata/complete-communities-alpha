@@ -2,18 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchProjects, setActive } from './duck'
 import { Project } from '../Project'
-import { Heading } from 'react-bulma-components'
 import { neighborhoods } from '../redux/constants'
 import {
   filter,
-  concat,
   includes,
   invertObj,
   toPairs,
   reduce,
   map,
   pipe,
-  partition,
   curry,
   addIndex,
 } from 'ramda'
@@ -25,27 +22,17 @@ const {
 const neighborhoodNameToValue = invertObj(neighborhoods)
 
 const filterFns = {
-  neighborhood: (value,
-    project) => (neighborhoods[value] === project.neighborhood),
-  oz: (isOZ, project) => (isOZ && includes('Opportunity Zone', project.eligiblePrograms || [])) || (!isOZ && true),
   neighborhoods: (activeNeighborhoods, project) => (includes(neighborhoodNameToValue[project.neighborhood], activeNeighborhoods)),
+  oz: (isOZ, project) => (isOZ && includes('Opportunity Zone', project.eligiblePrograms || [])) || (!isOZ && true),
 }
 
 const quickProjectFilter = curry(
   (filters, projects) => {
-    let projectsToCheck = projects
     return pipe(
       toPairs,
-      reduce((acc, [filterName, value]) => {
-        const [
-          matchingProjects,
-          remainingProjects,
-        ] = partition(curry(filterFns[filterName])(value))(projectsToCheck)
-
-        projectsToCheck = remainingProjects
-
-        return concat(acc)(matchingProjects)
-      }, []),
+      reduce((acc, [filterName, value]) => (
+        filter(curry(filterFns[filterName])(value))(acc)
+      ), projects),
     )(filters)
   }
 )

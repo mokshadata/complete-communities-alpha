@@ -1,4 +1,4 @@
-import { includes, assoc, keys, mapObjIndexed} from 'ramda'
+import { includes, assoc, keys } from 'ramda'
 import { createReducer } from 'redux-ramda'
 import { map, mergeMap } from 'rxjs/operators'
 import { ajax } from 'rxjs/ajax'

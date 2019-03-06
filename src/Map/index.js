@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StaticMap } from 'react-map-gl'
-import DeckGL, { GeoJsonLayer, MapController } from 'deck.gl'
-import { map, path, includes, indexOf, partition } from 'ramda'
+import DeckGL, { GeoJsonLayer } from 'deck.gl'
+import { path, includes, partition } from 'ramda'
 import { neighborhoods } from '../redux/constants'
 
 import { Tag } from 'react-bulma-components'
@@ -66,8 +66,6 @@ export class Map extends Component {
       features: inactive,
       type: 'FeatureCollection',
     }
-    
-    const neighborhoodLayers = map(path(['properties', 'SNBNAME']))(this.props.data.features)
 
     return (
     <div

@@ -10,7 +10,7 @@ import { neighborhoods } from '../redux/constants'
 import { Map } from '../Map'
 import { FilterTag } from '../Tags'
 
-import { append, reject, equals, includes, partition } from 'ramda'
+import { append, reject, equals, includes } from 'ramda'
 
 export class Filters extends Component {
   componentWillMount() {
