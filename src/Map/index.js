@@ -80,16 +80,15 @@ export class Map extends Component {
         {...viewport}
       >
         {
-          <Tag color='warning' style={{
-            position: 'absolute',
+          <Tag.Group className='map-tooltip' gapless style={{
             left: this.state.hoveredNeighborhood.x + 10,
             top: this.state.hoveredNeighborhood.y - 20,
-            zIndex: 2,
-            pointerEvents: 'none',
             display: (this.state.hoveredNeighborhood.name && 'block') || 'none',
           }}>
-            {this.state.hoveredNeighborhood.name}
-          </Tag>
+            <Tag color='warning'>
+              {this.state.hoveredNeighborhood.name}
+            </Tag>
+          </Tag.Group>
         }
         <GeoJsonLayer
           id='active-neighborhoods'
