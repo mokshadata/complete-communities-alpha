@@ -4,24 +4,34 @@ import { fetchNeighborhoods } from './duck'
 import { setFilter } from '../Projects/duck'
 
 import Switch from 'react-bulma-switch/lib'
-import { Form, Field, Label, Control, Input, Heading } from 'react-bulma-components'
+import { Form, Field, Label, Control, Input, Heading, Tag } from 'react-bulma-components'
 import { neighborhoods } from '../redux/constants'
 
 import { Map } from '../Map'
-import { FilterTag } from '../Tags' 
+import { FilterTag } from '../Tags'
+
+import { append, reject, equals, includes, partition } from 'ramda'
 
 export class Filters extends Component {
   componentWillMount() {
     this.props.fetchNeighborhoods()
   }
-  setNeighborhood = (neighborhood) => {
+  toggleNeighborhood = (neighborhood) => {
+    const activeNeighborhoods = this.props.activeFilters.neighborhoods
+    const hasNeighborhood = includes(neighborhood, activeNeighborhoods)
+
+    const updatedNeighborhoods = (
+      (hasNeighborhood && reject(equals(neighborhood))) ||
+      append(neighborhood)
+    )(activeNeighborhoods)
+
     this.props.setFilter({
-      neighborhood
+      neighborhoods: updatedNeighborhoods,
     })
   }
   toggleOZ = () => {
     this.props.setFilter({
-      oz: !this.props.filters.oz
+      oz: !this.props.activeFilters.oz
     })
   }
   render() {
@@ -29,27 +39,32 @@ export class Filters extends Component {
       <div style={{position: 'relative'}}>
         <Map
           data={this.props.neighborhoods}
-          onShapeClick={this.setNeighborhood}
-          activeNeighborhood={this.props.filters.neighborhood}
+          onShapeClick={this.toggleNeighborhood}
+          activeNeighborhoods={this.props.activeFilters.neighborhoods}
         />
         <Heading size={5} style={{
           marginTop: '1rem',
-          marginBottom: 0,
+          marginBottom: '0.25rem',
         }}>Filters</Heading>
         <form>
+          <Tag.Group>{
+            this.props.activeFilters.neighborhoods
+              .map((neighborhood, index) => <FilterTag
+                handleDelete={() => this.toggleNeighborhood(neighborhood)}
+                key={index}
+                type='neighborhood'>
+                  {neighborhoods[neighborhood]}
+                </FilterTag>
+              )
+          }</Tag.Group>
           <Switch
-            value={this.props.filters.oz}
+            value={this.props.activeFilters.oz}
             onChange={this.toggleOZ}
+            rounded
+            outlined
             >
             OZ Eligible Only
           </Switch>
-          {
-            this.props.filters.neighborhood? (<FilterTag
-              handleDelete={() => this.setNeighborhood(null)}
-              type='neighborhood'>{
-              neighborhoods[this.props.filters.neighborhood]
-            }</FilterTag>) : null
-          }
           {/* <Field>
             <Label>Name</Label>
             <Control>
@@ -65,8 +80,8 @@ export class Filters extends Component {
 export default connect(
   ( {
       filters: { neighborhoods = {} },
-      projects: { filters = {} },
-    } ) => ({ neighborhoods, filters }),
+      projects: { activeFilters = {} },
+    } ) => ({ neighborhoods, activeFilters }),
   {
     fetchNeighborhoods,
     setFilter,

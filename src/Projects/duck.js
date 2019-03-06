@@ -1,4 +1,4 @@
-import { evolve, mergeDeepLeft, assoc, append, includes, identity } from 'ramda'
+import { evolve, mergeDeepLeft, assoc, append, includes, keys } from 'ramda'
 import { createReducer } from 'redux-ramda'
 import { map, mapTo, mergeMap, filter, withLatestFrom } from 'rxjs/operators'
 import { ajax } from 'rxjs/ajax'
@@ -6,7 +6,6 @@ import { ofType } from 'redux-observable'
 
 import { createSimpleAction, createConstantAction } from '../redux/helpers'
 import { neighborhoods } from '../redux/constants'
-import { identity as identity$ } from 'rxjs';
 
 // Action Types
 const prefix = 'opportunity-zones/projects/'
@@ -18,6 +17,7 @@ const CREATE = `${prefix}CREATE`
 // const REMOVE = `${prefix}REMOVE`
 const FILTER = `${prefix}FILTER`
 const SET_FILTER  = `${prefix}SET_FILTER`
+const SET_ACTIVE = `${prefix}SET_ACTIVE`
 
 export const actionTypes = {
   fetch, FETCH,
@@ -27,6 +27,7 @@ export const actionTypes = {
   // remove: REMOVE,
   filter: FILTER,
   setFilter: SET_FILTER,
+  setActive: SET_ACTIVE,
 }
 
 // Action Creators
@@ -35,14 +36,18 @@ export const loadProjects = createSimpleAction(LOAD)
 export const createProject = createSimpleAction(CREATE)
 export const filterProjects = createSimpleAction(FILTER)
 export const setFilter = createSimpleAction(SET_FILTER)
+export const setActive = createSimpleAction(SET_ACTIVE)
 
 // Reducer
 const initialState = {
-  filters: {
+  activeFilters: {
     oz: true,
+    neighborhoods: keys(neighborhoods),
   },
   items: [],
   filteredItems: [],
+  active: '',
+  hello: ''
 }
 
 export default createReducer(
@@ -62,8 +67,11 @@ export default createReducer(
       }
     ],
     [
-      SET_FILTER, (filters) => mergeDeepLeft({ filters })
-    ]
+      SET_FILTER, (activeFilters) => mergeDeepLeft({ activeFilters })
+    ],
+    [
+      SET_ACTIVE, (project) => assoc('active', project.id)
+    ],
 ])
 
 // Side-effects

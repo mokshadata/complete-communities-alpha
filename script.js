@@ -1,6 +1,8 @@
 const XLSX = require('xlsx')
 const path = require('path')
 const fs = require('fs')
+const crypto = require('crypto')
+
 const {
   map,
   mapObjIndexed,
@@ -84,6 +86,7 @@ function flattenToList(projectsByNeighborhoods) {
       setMetrics,
       setSteps,
       setLists,
+      setId,
     )),
   )(projectsByNeighborhoods)
 }
@@ -95,6 +98,20 @@ function setSteps(project) {
       steps: project['Action Steps'].split(/; ?/),
     }),
   )(project)
+}
+
+function makeId(project) {
+  const id = crypto.createHmac('sha256', 'PROJECT_ID')
+    .update(JSON.stringify(pick(['Projects', 'neighborhood'], project)))
+    .digest('hex')
+
+  return {
+    id,
+  }
+}
+
+function setId(project) {
+  return merge(makeId(project))(project)
 }
 
 function setPrograms(project) {

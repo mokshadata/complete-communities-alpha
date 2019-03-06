@@ -1,4 +1,4 @@
-import { includes, assoc, keys} from 'ramda'
+import { includes, assoc, keys, mapObjIndexed} from 'ramda'
 import { createReducer } from 'redux-ramda'
 import { map, mergeMap } from 'rxjs/operators'
 import { ajax } from 'rxjs/ajax'
@@ -13,14 +13,18 @@ const prefix = 'opportunity-zones/neighborhoods/'
 const FETCH = `${prefix}FETCH`
 const LOAD = `${prefix}LOAD`
 
+const LOAD_PROGRAM_FILTERS = `${prefix}LOAD_PROGRAM_FILTERS`
+
 export const actionTypes = {
   fetch, FETCH,
   load: LOAD,
+  loadProgramFilters: LOAD_PROGRAM_FILTERS,
 }
 
 // Action Creators
 export const fetchNeighborhoods = createConstantAction(FETCH)
 export const loadNeighborhoods = createSimpleAction(LOAD)
+export const loadProgramFilters = createSimpleAction(LOAD_PROGRAM_FILTERS)
 
 export function filterGeoJSON(geoJSON) {
   const features = geoJSON.features.filter((item) => (
@@ -38,6 +42,7 @@ const initialState = {
     features: [],
     type: 'FeatureCollection',
   },
+  projects: {},
 }
 
 export default createReducer(
@@ -45,6 +50,14 @@ export default createReducer(
     [
       LOAD, assoc('neighborhoods')
     ],
+    // [
+    //   LOAD_PROGRAM_FILTERS, (programs) => (
+    //     pipe(
+    //       pick(['eligiblePrograms', 'excludedPrograms', 'Section', 'Prority', 'Timeline', 'Lead Partners', 'Support Partners', 'Potential Programs']),
+    //       mapObjIndexed((program) => ())
+    //     )
+    //   )
+    // ],
 ])
 
 // Side-effects

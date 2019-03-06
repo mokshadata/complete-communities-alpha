@@ -1,11 +1,11 @@
 import React from 'react'
-import { Tag, Card, Content, Heading, Panel } from 'react-bulma-components'
+import { Tag, Card, Content, Heading } from 'react-bulma-components'
 import './metric.css'
 import { isEmpty } from 'ramda'
 
-export function Metrics({metrics}) {
-  return (<div className='metrics-list'>
-    <Heading size={5}>
+export function Metrics({ metrics }) {
+  return (<div className='metrics-list project--section'>
+    <Heading size={6}>
       Metrics
     </Heading>
     {
@@ -21,39 +21,67 @@ export function Metrics({metrics}) {
   </div>)
 }
 
+export function ListTags({ sectionName, list, color = 'light' }) {
+  return (<div className='project--section'>
+    <Heading size={6} style={{marginBottom: '0.25em'}}>{ sectionName }</Heading>
+    <Tag.Group>
+      {
+        (isEmpty(list) && 'none') ||
+        list.map((item, index) => (
+          <Tag key={ index } color={color} className='is-medium'>{ item }</Tag>
+        ))
+      }
+    </Tag.Group>
+  </div>)
+}
 
-export function Project({ project }) {
+export function Steps({ steps }){
+  return (<ul className='project-steps project--section'>
+    { steps.map((step, index) => <li key={index}>{step}</li>)}
+  </ul>)
+}
+
+export function Project({ project, isActive = false, makeActive }) {
 
   return (
-    <Card style={{marginBottom: '2rem'}}>
-      <Card.Header>
+    <Card className='project' style={{marginBottom: '2rem'}} onClick={makeActive}>
+      <Card.Header className={isActive?'has-background-primary':''}>
         <Card.Header.Title>
           { project.Goal }
-          <Tag color='info' style={{position: 'absolute', right: '1em'}}>
-            { project.Section }
-          </Tag>
+          <Tag.Group  style={{position: 'absolute', right: '1em'}}>
+            <Tag color='info' style={{marginBottom: 0}}>
+              { project.Section }
+            </Tag>
+            <Tag color='warning' style={{marginBottom: 0}}>
+              { project['neighborhood'] }
+            </Tag>
+          </Tag.Group>
         </Card.Header.Title>
       </Card.Header>
       <Card.Content>
         <Content>
-          <Heading size={5} style={{marginBottom: '0.25em'}}>
+          <Heading size={5}>
             { project.Projects }
           </Heading>
-          <ul>{ project.steps.map((step, index) => <li key={index}>{step}</li>)}</ul>
-          {isEmpty(project.metrics)? null : <Metrics metrics={project.metrics}/>}
-          <Heading size={5} style={{marginBottom: '0.25em'}}>Eligible Programs</Heading>
-          <Tag.Group>
-            {
-              project.eligiblePrograms.map((program, index) => (
-                <Tag color='primary' key={ index }>{ program }</Tag>
-              ))
-            }
-          </Tag.Group>
-          <Heading size={5} style={{marginBottom: '0.25em'}}>Neighborhood</Heading>
-          {
-            project['neighborhood'] === ''? null :
-              (<Tag color='warning'>{ project['neighborhood'] }</Tag>)
-          }
+          {isActive? <Steps steps={project.steps}/> : null}
+          {(isActive && !isEmpty(project.metrics))? <Metrics metrics={project.metrics}/> : null}
+          <ListTags
+            sectionName='Eligible Programs'
+            list={project.eligiblePrograms}
+            color='primary'
+          />
+          {isActive && <ListTags
+            sectionName='Potential Programs'
+            list={project['Potential Programs']}
+          />}
+          {isActive && <ListTags
+            sectionName='Lead Partners'
+            list={project['Lead Partners']}
+          />}
+          {isActive && <ListTags
+            sectionName='Support Partners'
+            list={project['Support Partners']}
+          />}
         </Content>
       </Card.Content>
     </Card>

@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchProjects } from './duck'
+import { fetchProjects, setActive } from './duck'
 import { Project } from '../Project'
 import { Heading } from 'react-bulma-components'
 import { neighborhoods } from '../redux/constants'
-import { filter, concat, includes, identity, toPairs, reduce, map, pipe, reject, not, curry, equals, addIndex } from 'ramda'
+import { filter, concat, includes, invertObj, toPairs, reduce, map, pipe, reject, not, curry, equals, addIndex } from 'ramda'
+
+const neighborhoodNameToValue = invertObj(neighborhoods)
 
 const filterFns = {
   neighborhood: (value, project) => (neighborhoods[value] === project.neighborhood),
-  oz: (value, project) => (value && includes('Opportunity Zone', project.eligiblePrograms || [])) || (!value && true),
+  oz: (isOZ, project) => (isOZ && includes('Opportunity Zone', project.eligiblePrograms || [])) || (!isOZ && true),
+  neighborhoods: (activeNeighborhoods, project) => (includes(neighborhoodNameToValue[project.neighborhood], activeNeighborhoods)),
 }
 
 const quickProjectFilter = curry(
@@ -30,10 +33,10 @@ export class Projects extends Component {
     this.props.fetchProjects()
   }
   render() {
-    const projects = quickProjectFilter(this.props.filters)(this.props.projects)
+    const projects = quickProjectFilter(this.props.activeFilters)(this.props.projects)
     return (
         <div>
-          <Heading>Projects</Heading>
+          <Heading>Opportunities</Heading>
           <div style={{
               height: 'calc(100vh - 160px)',
               overflow: 'auto',
@@ -44,6 +47,8 @@ export class Projects extends Component {
                   return <Project
                     project={project}
                     key={index}
+                    makeActive={() => this.props.setActive(project)}
+                    isActive={this.props.active === project.id}
                   />
                 })(projects)
               }
@@ -55,7 +60,7 @@ export class Projects extends Component {
 
 export default connect(
   ( {
-      projects: { items = [], filters },
-    } ) => ({ projects: items, filters }),
-  { fetchProjects },
+      projects: { items = [], activeFilters, active },
+    } ) => ({ projects: items, activeFilters, active }),
+  { fetchProjects, setActive },
 )(Projects)
