@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tag, Card, Content, Heading } from 'react-bulma-components'
 import './metric.css'
-import { isEmpty } from 'ramda'
+import { isEmpty, omit, values, map } from 'ramda'
 
 export function Metrics({ metrics }) {
   return (<div className='metrics-list project--section'>
@@ -26,7 +26,7 @@ export function ListTags({ sectionName, list, color = 'light' }) {
     <Heading size={6} style={{marginBottom: '0.25em'}}>{ sectionName }</Heading>
     <Tag.Group>
       {
-        (isEmpty(list) && 'none') ||
+        (isEmpty(list) && <i>to be determined</i>) ||
         list.map((item, index) => (
           <Tag key={ index } color={color} className='is-medium'>{ item }</Tag>
         ))
@@ -41,11 +41,25 @@ export function Steps({ steps }){
   </ul>)
 }
 
+export function makeSearchable(thing) {
+  return JSON.stringify(values(thing))
+    .replace(/{|}|\:|\[|\]|"|\,/g, ' ')
+}
+
+export function getSearchableContent(project) {
+  const metricsSearchable = map(makeSearchable, project.metrics).join(' ')
+  return makeSearchable(omit(['id', 'metrics'], project)) + ' ' + metricsSearchable
+}
+
 export function Project({ project, isActive = false, makeActive }) {
 
   return (
-    <Card className='project' style={{marginBottom: '2rem'}} onClick={makeActive}>
-      <Card.Header className={isActive?'has-background-primary':''}>
+    <Card
+      className={`project ${isActive && 'active'}`}
+      data-jets={getSearchableContent(project).toLowerCase()}
+      style={{marginBottom: '2rem'}}
+      onClick={makeActive}>
+      <Card.Header>
         <Card.Header.Title>
           { project.Goal }
           <Tag.Group  style={{position: 'absolute', right: '1em'}}>

@@ -4,7 +4,7 @@ import { fetchNeighborhoods } from './duck'
 import { setFilter } from '../Projects/duck'
 
 import Switch from 'react-bulma-switch/lib'
-import { Form, Field, Label, Control, Input, Heading, Tag } from 'react-bulma-components'
+import { Heading, Tag } from 'react-bulma-components'
 import { neighborhoods } from '../redux/constants'
 
 import { Map } from '../Map'
@@ -46,32 +46,30 @@ export class Filters extends Component {
           marginTop: '1rem',
           marginBottom: '0.25rem',
         }}>Filters</Heading>
-        <form>
-          <Tag.Group>{
-            this.props.activeFilters.neighborhoods
-              .map((neighborhood, index) => <FilterTag
-                handleDelete={() => this.toggleNeighborhood(neighborhood)}
-                key={index}
-                type='neighborhood'>
-                  {neighborhoods[neighborhood]}
-                </FilterTag>
-              )
-          }</Tag.Group>
-          <Switch
-            value={this.props.activeFilters.oz}
-            onChange={this.toggleOZ}
-            rounded
-            outlined
-            >
-            OZ Eligible Only
-          </Switch>
-          {/* <Field>
-            <Label>Name</Label>
-            <Control>
-              <Input/>
-            </Control>
-          </Field> */}
-        </form>
+        <Tag.Group>{
+          this.props.activeFilters.neighborhoods
+            .map((neighborhood, index) => <FilterTag
+              handleDelete={() => this.toggleNeighborhood(neighborhood)}
+              key={index}
+              type='neighborhood'>
+                {neighborhoods[neighborhood]}
+              </FilterTag>
+            )
+        }</Tag.Group>
+        <Switch
+          value={this.props.activeFilters.oz}
+          onChange={this.toggleOZ}
+          rounded
+          outlined
+          >
+          OZ Eligible Only
+        </Switch>
+        {/* <Field>
+          <Label>Name</Label>
+          <Control>
+            <Input/>
+          </Control>
+        </Field> */}
       </div>
     )
   }
