@@ -85,7 +85,8 @@ export class Search extends Component {
         {this.state.search && `#projects>:not([data-jets*="${this.state.search.toLowerCase()}"]){display:none}`}
       </style>
       <Field><Input
-        placeholder='Find your opportunity...'
+        color='primary'
+        placeholder='Find your opportunity to invest in impact...'
         type='search'
         className='is-large'
         id='projects-search'

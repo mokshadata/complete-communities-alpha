@@ -62,7 +62,7 @@ export class Filters extends Component {
           rounded
           outlined
           >
-          OZ Eligible Only
+          Eligible for Opportunity Zone
         </Switch>
         {/* <Field>
           <Label>Name</Label>

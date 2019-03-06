@@ -41,7 +41,7 @@ export const setActive = createSimpleAction(SET_ACTIVE)
 // Reducer
 const initialState = {
   activeFilters: {
-    oz: true,
+    oz: false,
     neighborhoods: keys(neighborhoods),
   },
   items: [],
