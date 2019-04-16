@@ -22,6 +22,10 @@ h1, h2, h3, h4, h5, h6, .title, .card-header-title {
   font-family: 'Quicksand', sans-serif;
 }
 
+.App button, .App input, .App select, .App textarea {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .tag {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;

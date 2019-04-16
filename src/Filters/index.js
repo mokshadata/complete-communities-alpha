@@ -56,14 +56,14 @@ export class Filters extends Component {
               </FilterTag>
             )
         }</Tag.Group>
-        <Switch
+        {/* <Switch
           value={this.props.activeFilters.oz}
           onChange={this.toggleOZ}
           rounded
           outlined
           >
           Eligible for Opportunity Zone
-        </Switch>
+        </Switch> */}
         {/* <Field>
           <Label>Name</Label>
           <Control>

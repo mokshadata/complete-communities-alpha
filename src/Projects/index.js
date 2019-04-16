@@ -86,7 +86,7 @@ export class Search extends Component {
       </style>
       <Field><Input
         color='primary'
-        placeholder='Find your next impact investment.'
+        placeholder='Find a Complete Communities Project.'
         type='search'
         className='is-large'
         id='projects-search'
