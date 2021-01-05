@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://januaryadvisors.github.io/complete-communities-alpha/",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bulma-steps": "^2.2.1",
     "deck.gl": "^6.4.5",
     "leaflet": "^1.4.0",
