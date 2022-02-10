@@ -9,7 +9,7 @@
     "deck.gl": "^6.4.5",
     "leaflet": "^1.4.0",
     "mapbox-gl": "^0.53.1",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "ramda": "^0.26.1",
     "react": "^16.8.3",
     "react-bulma-components": "^2.3.0",
